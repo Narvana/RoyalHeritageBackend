@@ -20,7 +20,7 @@ const swaggerDefinition = {
       url: 'http://localhost:3000', // Local server
     },
     {
-      url: 'https://api.storagejini.com', // Live server
+      url: 'https://royalheritagebackend.onrender.com', // Live server
     },
   ],
   components: { // Use components for security schemes in OpenAPI 3.0
