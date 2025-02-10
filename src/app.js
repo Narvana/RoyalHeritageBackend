@@ -13,12 +13,12 @@ const authRoute=require('./route/auth.router');
 const AboutRoute=require('./route/about.router');
 const RoomEnquiry=require('./route/RoomEnquiry.router');
 const EventEnquiry=require('./route/EventEnquiry.router');
+const RoomImages = require('./route/RoomImage.router');
 
 const mongoose = require('mongoose');
 const multer=require('multer');
 
 const port = process.env.PORT || 5000;
-
 
 app.use(cors({
     origin: [
@@ -45,6 +45,7 @@ app.use('/api/banner',bannerRoute);
 app.use('/api/about',AboutRoute);
 app.use('/api/Room/Enquiry',RoomEnquiry);
 app.use('/api/Event/Enquiry',EventEnquiry);
+app.use('/api/Rooms/Image',RoomImages);
 
 const swaggerDocs = require('./swagger');
 swaggerDocs(app);
