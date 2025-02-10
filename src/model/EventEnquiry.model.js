@@ -39,10 +39,10 @@ const eventEnquirySchema=new mongoose.Schema(
         eventType: {
             type: String,
             required: [true, 'Event Type is required'],
-            enum: {
-                values: ['Wedding', 'Birthday', 'Corporate', 'Other'],
-                message: '{VALUE} is not a valid Room Type.'
-            },
+            // enum: {
+            //     values: ['Wedding', 'Birthday', 'Corporate','Haldi', 'Other'],
+            //     message: '{VALUE} is not a valid Event Type.'
+            // },
         },     
         eventDate: {
             type: Date,
