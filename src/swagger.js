@@ -16,9 +16,9 @@ const swaggerDefinition = {
     },
   },
   servers: [
-    {
-      url: 'http://localhost:3000', // Local server
-    },
+    // {
+    //   url: 'http://localhost:3000', // Local server
+    // },
     {
       url: 'https://royalheritagebackend.onrender.com', // Live server
     },
