@@ -25,7 +25,8 @@ app.use(cors({
         "http://localhost:5173",
         "http://localhost:3000",
         "https://adminroyalheritage.netlify.app",
-        "https://royalheritagenew.netlify.app"
+        "https://royalheritagenew.netlify.app",
+        "https://royalheritageayodhya.com"
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
