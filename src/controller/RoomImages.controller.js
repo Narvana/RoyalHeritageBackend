@@ -24,68 +24,6 @@ const AddRoomImage=async(req,res,next)=>{
         if(RoomsImages)
         { 
             if(base64Deluxe && base64Deluxe.length>0 )
-                {
-                    await Promise.all(
-                        base64Deluxe.map(async (file)=>{
-                            uploadResult = await uploadBase64ToFirebase(file);                        
-                            link = uploadResult;
-                            imageURLDeluxe.push(link);
-                        })
-                    )
-                    // Image= 'Deluxe';
-                }if(base64Executive && base64Executive.length > 0)
-                {
-                    await Promise.all(
-                        base64Executive.map(async (file)=>{
-                            
-                            uploadResult = await uploadBase64ToFirebase(file);
-                            
-                            link = uploadResult; 
-                            imageURLExecutive.push(link);
-                        })
-                    )
-                    // Image='Executive';
-                }if(base64Maharaja && base64Maharaja.length > 0)
-                {
-                    await Promise.all(
-                        base64Maharaja.map(async (file)=>{
-                            uploadResult = await uploadBase64ToFirebase(file);
-                            link = uploadResult; 
-                            imageURLMaharaja.push(link);
-                        })
-                    )
-                    // Image='Maharaja';
-                }if(base64Suite && base64Suite.length > 0)
-                {     
-                    await Promise.all(
-                        base64Suite.map(async (file)=>{
-                            uploadResult = await uploadBase64ToFirebase(file);
-                            link = uploadResult; 
-                            imageURLSuite.push(link);
-                        })
-                    )
-                }
-            const DeluxeUpdate=[...RoomImageData.Deluxe,...imageURLDeluxe];
-            const ExecutiveUpdate=[...RoomImageData.Executive,...imageURLExecutive];
-            const MaharajaUpdate=[...RoomImageData.Maharaja,...imageURLMaharaja];
-            const SuiteUpdate=[...RoomImageData.Suite,...imageURLSuite];
-
-            const updateRoomsImages= await roomsImages.findByIdAndUpdate(
-                id,
-                {
-                    $set: {
-                        Deluxe:DeluxeUpdate,
-                        Executive:ExecutiveUpdate,
-                        Maharaja:MaharajaUpdate,
-                        Suite:SuiteUpdate
-                    }   
-                }
-             );
-            return next(ApiSuccess(200,updateRoomsImages,'Images updated'));
-        }
-        else
-        {
-            if(base64Deluxe && base64Deluxe.length>0 )
             {
                 await Promise.all(
                     base64Deluxe.map(async (file)=>{
@@ -101,7 +39,6 @@ const AddRoomImage=async(req,res,next)=>{
                     base64Executive.map(async (file)=>{
                         
                         uploadResult = await uploadBase64ToFirebase(file);
-                        
                         link = uploadResult; 
                         imageURLExecutive.push(link);
                     })
@@ -127,7 +64,71 @@ const AddRoomImage=async(req,res,next)=>{
                     })
                 )
             }
-            else 
+            const DeluxeUpdate=[...RoomImageData.Deluxe,...imageURLDeluxe];
+            const ExecutiveUpdate=[...RoomImageData.Executive,...imageURLExecutive];
+            const MaharajaUpdate=[...RoomImageData.Maharaja,...imageURLMaharaja];
+            const SuiteUpdate=[...RoomImageData.Suite,...imageURLSuite];
+
+            const updateRoomsImages= await roomsImages.findByIdAndUpdate(
+                id,
+                {
+                    $set: {
+                        Deluxe:DeluxeUpdate,
+                        Executive:ExecutiveUpdate,
+                        Maharaja:MaharajaUpdate,
+                        Suite:SuiteUpdate
+                    }   
+                }
+             );
+            return next(ApiSuccess(200,updateRoomsImages,'Images updated'));
+        }
+        else
+        {
+            let ImageAdded=false;
+            if(base64Deluxe && base64Deluxe.length>0 )
+            {
+                await Promise.all(
+                    base64Deluxe.map(async (file)=>{
+                        uploadResult = await uploadBase64ToFirebase(file);                        
+                        link = uploadResult;
+                        imageURLDeluxe.push(link);
+                    })
+                )
+                ImageAdded=true;
+            }if(base64Executive && base64Executive.length > 0)
+            {
+                await Promise.all(
+                    base64Executive.map(async (file)=>{
+                        
+                        uploadResult = await uploadBase64ToFirebase(file);
+                        
+                        link = uploadResult; 
+                        imageURLExecutive.push(link);
+                    })
+                )
+                ImageAdded=true;
+            }if(base64Maharaja && base64Maharaja.length > 0)
+            {
+                await Promise.all(
+                    base64Maharaja.map(async (file)=>{
+                        uploadResult = await uploadBase64ToFirebase(file);
+                        link = uploadResult; 
+                        imageURLMaharaja.push(link);
+                    })
+                )
+                ImageAdded=true;
+            }if(base64Suite && base64Suite.length > 0)
+            {     
+                await Promise.all(
+                    base64Suite.map(async (file)=>{
+                        uploadResult = await uploadBase64ToFirebase(file);
+                        link = uploadResult; 
+                        imageURLSuite.push(link);
+                    })
+                )
+                ImageAdded=true;
+            }
+            if(ImageAdded === false)
             {
                 return next(ApiError(400, `Please Upload image of any Deluxe, Executive , Maharaja or Suite`));   
             }
