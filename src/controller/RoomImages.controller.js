@@ -78,8 +78,14 @@ const AddRoomImage=async(req,res,next)=>{
                         Maharaja:MaharajaUpdate,
                         Suite:SuiteUpdate
                     }   
+                },
+                {
+                    new: true
+                    // runValidators: !needsComplexUpdate, // Skip validation if it has already been done
                 }
              );
+            //  console.log({updateRoomsImages});
+
             return next(ApiSuccess(200,updateRoomsImages,'Images updated'));
         }
         else
