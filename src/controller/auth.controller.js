@@ -88,29 +88,35 @@ const Login=async(req,res,next)=>{
       }
   
       let existingEmail;
-      try {
-           existingEmail = await Auth.findOne({email});
-           if(!existingEmail)
+      try 
+      {
+        existingEmail = await Auth.findOne({email});
+        
+        if(!existingEmail)
         {
-              return next(ApiError(400,`${email} email don't Exist. Either Enter a correct one or Register Yourself with this email.`))
-           }
-           else
-           {
-              const checkPassword=bcryptjs.compareSync(password,existingEmail.password)
-              if (!checkPassword) {
+            return next(ApiError(400,`${email} email don't Exist. Either Enter a correct one or Register Yourself with this email.`))
+        }
+        else
+        {
+            const checkPassword=bcryptjs.compareSync(password,existingEmail.password)
+            if (!checkPassword) 
+            {
                 return next(ApiError(400,`Wrong Password, Try Again`))
-                } 
-              else {
-                 const accessToken = await generateAccessToken(existingEmail._id);
+            } 
+            else 
+            {
+                const accessToken = await generateAccessToken(existingEmail._id);
    
                 //  const refreshToken=await generateRefreshToken(existingEmail._id);
    
-                 const loggedIn=await Auth.findById(existingEmail._id).select("-password");
+                //  const loggedIn=await Auth.findById(existingEmail._id).select("-password");                
 
-              return next(ApiSuccess(200,{user:loggedIn,accessToken},`${req.role} Logged In Successfully`))
+                // rest operator
+                const {password,...user} =  existingEmail._doc; // Using the _doc property allows you to extract this plain object easily.
+                return next(ApiSuccess(200,{user,accessToken},`${user.name} Logged In Successfully`))
               }
-          }
-         }
+        }
+      }
       catch(error)
       {
           console.log({
