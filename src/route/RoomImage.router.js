@@ -15,6 +15,8 @@ const {verify} = require('../middleware/verifyToken');
  *     summary: Upload room images
  *     description: Upload images for different room types (Deluxe, Executive, Maharaja, Suite). This endpoint can update existing images or create new entries if no images exist.
  *     tags: [Room Images]
+ *     security:
+ *       - bearerAuth: []  # Indicates that this endpoint requires bearer token authentication
  *     requestBody:
  *       required: true
  *       content:
@@ -115,6 +117,19 @@ const {verify} = require('../middleware/verifyToken');
  *                 message:
  *                   type: string
  *                   example: 'Please upload images of any Deluxe, Executive, Maharaja, or Suite'
+ *       401:
+ *         description: Unauthorized - Invalid or expired token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Unauthorized User, No Token Found"
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -127,7 +142,13 @@ const {verify} = require('../middleware/verifyToken');
  *                   example: 500
  *                 message:
  *                   type: string
- *                   example: 'Internal Server Error: [error message]'
+ *                   example: "Internal Server Error: [error message]"
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
   router.post('/Add', verify,upload.fields([
       { name: 'Deluxe', maxCount: 10 },
