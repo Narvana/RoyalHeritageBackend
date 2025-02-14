@@ -13,6 +13,8 @@ const {verify} = require('../middleware/verifyToken');
  *     summary: Upload a Banner Image
  *     description: Uploads a banner image. If a banner image already exists, it updates the existing image.
  *     tags: [Banner]
+ *     security:
+ *       - bearerAuth: []  # Indicates that this endpoint requires bearer token authentication
  *     requestBody:
  *       required: true
  *       content:
@@ -51,6 +53,19 @@ const {verify} = require('../middleware/verifyToken');
  *                 error:
  *                   type: string
  *                   example: No Banner Image Provide
+ *       401:
+ *         description: Unauthorized - Invalid or expired token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Unauthorized User, No Token Found"
  *       500:
  *         description: Internal Server Error - An error occurred while processing the request.
  *         content:
@@ -61,6 +76,12 @@ const {verify} = require('../middleware/verifyToken');
  *                 error:
  *                   type: string
  *                   example: Internal Server Error <error message>
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 router.post('/Add/Image',verify,upload.single('BannerImage'),BannerUpload);
 
@@ -118,6 +139,8 @@ router.get('/View/Image',ViewBanner);
  *     summary: Remove a Banner Image
  *     description: Deletes a banner image from the database using the provided image ID.
  *     tags: [Banner]
+ *     security:
+ *       - bearerAuth: []  # Indicates that this endpoint requires bearer token authentication
  *     parameters:
  *       - in: query
  *         name: id
@@ -146,6 +169,19 @@ router.get('/View/Image',ViewBanner);
  *                 error:
  *                   type: string
  *                   example: Please Provide ID
+ *       401:
+ *         description: Unauthorized - Invalid or expired token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Unauthorized User, No Token Found"
  *       500:
  *         description: Internal Server Error - An error occurred while processing the request.
  *         content:
@@ -156,6 +192,12 @@ router.get('/View/Image',ViewBanner);
  *                 error:
  *                   type: string
  *                   example: Internal Server Error <error message>
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 router.delete("/Delete/Image",verify,RemoveBanner);
 
