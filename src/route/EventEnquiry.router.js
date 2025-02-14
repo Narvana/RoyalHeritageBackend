@@ -107,6 +107,8 @@ router.post('/Add',AddEventEnquiry);
  *     summary: Retrieve a list of Event Enquiries
  *     description: Fetches all event enquiries from the database.
  *     tags: [Event Enquiry]
+ *     security:
+ *       - bearerAuth: []  # Indicates that this endpoint requires bearer token authentication
  *     responses:
  *       200:
  *         description: Successfully retrieved the list of event enquiries.
@@ -155,6 +157,19 @@ router.post('/Add',AddEventEnquiry);
  *                 error:
  *                   type: string
  *                   example: No Event Enquiry
+ *       401:
+ *         description: Unauthorized - Invalid or expired token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Unauthorized User, No Token Found"
  *       500:
  *         description: Internal Server Error - An error occurred while processing the request.
  *         content:
@@ -165,6 +180,12 @@ router.post('/Add',AddEventEnquiry);
  *                 error:
  *                   type: string
  *                   example: Internal Server Error <error message>
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 router.get('/List',verify,GetEventEnquiry);
 
@@ -175,6 +196,8 @@ router.get('/List',verify,GetEventEnquiry);
  *     summary: Remove an Event Enquiry
  *     description: Deletes an event enquiry from the database using the provided event ID.
  *     tags: [Event Enquiry]
+ *     security:
+ *       - bearerAuth: []  # Indicates that this endpoint requires bearer token authentication 
  *     parameters:
  *       - in: query
  *         name: id
@@ -203,6 +226,19 @@ router.get('/List',verify,GetEventEnquiry);
  *                 error:
  *                   type: string
  *                   example: Please provide Event id for enquiry
+ *       401:
+ *         description: Unauthorized - Invalid or expired token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Unauthorized User, No Token Found"
  *       500:
  *         description: Internal Server Error - An error occurred while processing the request.
  *         content:
@@ -213,6 +249,12 @@ router.get('/List',verify,GetEventEnquiry);
  *                 error:
  *                   type: string
  *                   example: Internal Server Error <error message>
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 router.delete("/Delete",verify,removeEvent);
 
