@@ -14,6 +14,8 @@ const {verify} = require('../middleware/verifyToken');
  *     summary: Upload an About Image
  *     description: Uploads an image for the About section. If an image already exists, it updates the existing image.
  *     tags: [About]
+ *     security:
+ *       - bearerAuth: []  # Indicates that this endpoint
  *     requestBody:
  *       required: true
  *       content:
@@ -50,6 +52,19 @@ const {verify} = require('../middleware/verifyToken');
  *               properties:
  *                 error:
  *                   type: string
+ *       401:
+ *         description: Unauthorized - Invalid or expired token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Unauthorized User, No Token Found"
  *       500:
  *         description: Internal Server Error - An error occurred while processing the request.
  *         content:
@@ -59,7 +74,13 @@ const {verify} = require('../middleware/verifyToken');
  *               properties:
  *                 error:
  *                   type: string
- */
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+*/
 router.post('/Add/Image',verify,upload.single('AboutImage'),AboutImgUpload);
 
 /**
@@ -116,6 +137,8 @@ router.get('/View/Image',ViewAboutImg);
  *     summary: Remove an About Image
  *     description: Deletes an About image from the database using the provided image ID.
  *     tags: [About]
+ *     security:
+ *       - bearerAuth: []  # Indicates that this endpoint
  *     parameters:
  *       - in: query
  *         name: id
@@ -144,7 +167,20 @@ router.get('/View/Image',ViewAboutImg);
  *                 error:
  *                   type: string
  *                   example: Please Provide image ID
- *       500:
+ *       401:
+ *         description: Unauthorized - Invalid or expired token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Unauthorized User, No Token Found"
+*       500:
  *         description: Internal Server Error - An error occurred while processing the request.
  *         content:
  *           application/json:
@@ -154,6 +190,12 @@ router.get('/View/Image',ViewAboutImg);
  *                 error:
  *                   type: string
  *                   example: Internal Server Error <error message>
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 router.delete("/Delete/Image",verify,RemoveAboutImg);
 
