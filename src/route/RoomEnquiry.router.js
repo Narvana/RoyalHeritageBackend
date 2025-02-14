@@ -120,6 +120,8 @@ router.post('/Add',AddRoomEnquiry);
  *     summary: Retrieve a list of Room Enquiries
  *     description: Fetches all room enquiries from the database.
  *     tags: [Room Enquiry]
+ *     security:
+ *       - bearerAuth: []  # Indicates that this endpoint requires bearer token authentication
  *     responses:
  *       200:
  *         description: Successfully retrieved the list of room enquiries.
@@ -175,6 +177,19 @@ router.post('/Add',AddRoomEnquiry);
  *                 error:
  *                   type: string
  *                   example: No Room Enquiry
+ *       401:
+ *         description: Unauthorized - Invalid or expired token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Unauthorized User, No Token Found"
  *       500:
  *         description: Internal Server Error - An error occurred while processing the request.
  *         content:
@@ -185,6 +200,12 @@ router.post('/Add',AddRoomEnquiry);
  *                 error:
  *                   type: string
  *                   example: Internal Server Error <error message>
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 router.get('/List',verify,GetRoomEnquiry);
 
@@ -195,6 +216,8 @@ router.get('/List',verify,GetRoomEnquiry);
  *     summary: Remove a Room Enquiry
  *     description: Deletes a room enquiry from the database using the provided room ID.
  *     tags: [Room Enquiry]
+ *     security:
+ *       - bearerAuth: []  # Indicates that this endpoint requires bearer token authentication
  *     parameters:
  *       - in: query
  *         name: id
@@ -223,6 +246,19 @@ router.get('/List',verify,GetRoomEnquiry);
  *                 error:
  *                   type: string
  *                   example: Please provide room id for enquiry
+ *       401:
+ *         description: Unauthorized - Invalid or expired token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 401
+ *                 message:
+ *                   type: string
+ *                   example: "Unauthorized User, No Token Found"
  *       500:
  *         description: Internal Server Error - An error occurred while processing the request.
  *         content:
@@ -233,6 +269,12 @@ router.get('/List',verify,GetRoomEnquiry);
  *                 error:
  *                   type: string
  *                   example: Internal Server Error <error message>
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 router.delete("/Delete",verify,removeRoom);
 
