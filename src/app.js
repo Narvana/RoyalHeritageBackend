@@ -8,17 +8,18 @@ const helmet = require('helmet')
 const cors=require('cors')
 const cookieParser=require('cookie-parser')
 
+const mongoose = require('mongoose');
+const multer=require('multer');
+const port = process.env.PORT || 5000;
+
+// Routes List
 const bannerRoute=require('./route/banner.route');
 const authRoute=require('./route/auth.router');
 const AboutRoute=require('./route/about.router');
 const RoomEnquiry=require('./route/RoomEnquiry.router');
 const EventEnquiry=require('./route/EventEnquiry.router');
 const RoomImages = require('./route/RoomImage.router');
-
-const mongoose = require('mongoose');
-const multer=require('multer');
-
-const port = process.env.PORT || 5000;
+const GuestRoute=require('./route/guests.router');
 
 app.use(cors({
     origin: [
@@ -48,6 +49,7 @@ app.use('/api/about',AboutRoute);
 app.use('/api/Room/Enquiry',RoomEnquiry);
 app.use('/api/Event/Enquiry',EventEnquiry);
 app.use('/api/Rooms/Image',RoomImages);
+app.use('/api/Guest',GuestRoute);
 
 const swaggerDocs = require('./swagger');
 swaggerDocs(app);
