@@ -4,14 +4,28 @@ const ApiError=require('../utils/ApiResponse/ApiError');
 const ApiSuccess=require('../utils/ApiResponse/ApiSuccess');
 const {uploadToFirebase} = require('../middleware/ImageUpload/firebaseConfig');
 const roomEnquiry = require('../model/roomEnquiry.model');
+const axios = require('axios');
+
 // const Banner = require('../model/Banner.model');
 
 
 const AddRoomEnquiry=async(req,res,next)=>{
 
-    const {EnquiryName, EnquiryContact, EnquiryEmail,roomType,CheckIn,CheckOut,Adult,Child,RoomCount}=req.body;
-
+    const {EnquiryName, EnquiryContact, EnquiryEmail, roomType, CheckIn, CheckOut, Adult, Child, RoomCount, watNum, watMsg}=req.body;
+    
     try {
+        if(!watNum || !watMsg)
+        {
+            return next(ApiError(400,`Provide a Royal Heritage Number and Message both`));
+        } 
+        else
+        {
+            const regex = /^[1-9][0-9]{9}$/; // Changed to 
+            if (regex.test(watNum) === false) {
+                return next(ApiError(400, 'Provide a 10 digit Number for watNum'));
+            }
+        }
+
         const AddRoom=new roomEnquiry({
             EnquiryName, 
             EnquiryContact, 
@@ -24,12 +38,32 @@ const AddRoomEnquiry=async(req,res,next)=>{
             RoomCount
         });
 
-        data=await AddRoom.save();
+        data = await AddRoom.save();
+
         if(data)
         {
+            const sendMessage = {
+                api_key: 'API-X-332433606617278301336824731-P-API',
+                phone: `91${watNum}`,
+                message: `${watMsg}`
+            };
+
+            axios.post('https://phone.watverifyapi.live/send-wa-message/post', sendMessage, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+            })
+            .then(response => {
+            console.log('Message sent successfully:', response.data);
+            }) 
+            .catch(error => {
+            console.error('Error sending message:', error.response ? error.response.data : error.message);
+            });
             return next(ApiSuccess(200,data,'Room Enquiry Added'))
+        }else{
+            return next(ApiError(400,'Room Enquiry Not Added. Some issue might occur'))
         }
-        return next(ApiError(400,'Room Enquiry Not Added. Some issue might occur'))
+
     } catch (error) {
         console.log(
             {
